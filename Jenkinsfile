@@ -7,7 +7,9 @@ library identifier: 'pingle-jsl@main', retriever: modernSCM(
    credentialsId: 'github-creds'])
 
 pipeline {
-    agent any
+    agent {
+      label 'win'
+    }
     options {
         ansiColor('xterm')
     }
@@ -26,6 +28,10 @@ pipeline {
             // }
             steps {
                 echo('Hello')
+                sh('''
+                  ls
+                  pwd
+                ''')
             }
         }
     }
