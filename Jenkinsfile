@@ -14,8 +14,8 @@ pipeline {
         ansiColor('xterm')
     }
     environment {
-        ENGINE_DIR = 'C:\\Jenkins'
-        folderPath = "${env.ENGINE_DIR}\\Saved\\UnrealBuildTool"
+        ENGINE_DIR = 'C:/Jenkins'
+        folderPath = "${env.ENGINE_DIR}/Saved/UnrealBuildTool"
     }
     stages {
         stage ("Create Folder") {
@@ -30,8 +30,25 @@ pipeline {
             }
         }
         stage ("Remove Folder") {
+            when {
+                beforeAgent true
+                    expression {
+                        env.SKIP == "true"
+                    }
+            }
             steps {
                 removeFolder("${env.folderPath}")
+            }
+        }
+        stage ("Clean Folder") {
+            // when {
+            //     beforeAgent true
+            //         expression {
+            //             env.SKIP == "true"
+            //         }
+            // }
+            steps {
+                cleanFolder("${env.folderPath}")
             }
         }
     }
