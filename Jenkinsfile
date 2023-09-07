@@ -8,30 +8,20 @@ library identifier: 'pingle-jsl@main', retriever: modernSCM(
 
 pipeline {
     agent {
-      label 'win'
+        label 'win'
     }
     options {
         ansiColor('xterm')
     }
-    // environment {
-    // }
+    environment {
+        ENGINE_DIR = 'C:\\Jenkins'
+        folderPath = "${env.ENGINE_DIR}\\Saved\\UnrealBuildTool"
+    }
     stages {
-        stage ("Build Image") {
-            // when {
-            //     anyOf {
-            //         expression  {
-            //             currentBuild.number == 1
-            //         }
-            //         changeset "src/**"
-            //         changeset "Dockerfile"
-            //     }
-            // }
+        stage ("Create Folder") {
             steps {
                 echo('Hello')
-                sh('''
-                  ls
-                  pwd
-                ''')
+                createFolder("${env.folderPath}")
             }
         }
     }
