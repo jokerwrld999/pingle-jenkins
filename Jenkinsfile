@@ -16,6 +16,8 @@ pipeline {
     environment {
         ENGINE_DIR = 'C:/Jenkins'
         folderPath = "${env.ENGINE_DIR}/Saved/UnrealBuildTool"
+        srcPath = "${env.ENGINE_DIR}/Saved"
+        destPath = "${env.ENGINE_DIR}/Archived.zip"
     }
     stages {
         stage ("Create Folder") {
@@ -41,6 +43,17 @@ pipeline {
             }
         }
         stage ("Clean Folder") {
+            when {
+                beforeAgent true
+                    expression {
+                        env.SKIP == "true"
+                    }
+            }
+            steps {
+                cleanFolder("${env.folderPath}")
+            }
+        }
+        stage ("Archive Folder") {
             // when {
             //     beforeAgent true
             //         expression {
@@ -48,7 +61,7 @@ pipeline {
             //         }
             // }
             steps {
-                cleanFolder("${env.folderPath}")
+                archiveFolder("${env.srcPath}","${env.destPath}")
             }
         }
     }
