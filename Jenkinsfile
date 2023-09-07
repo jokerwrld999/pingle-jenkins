@@ -19,9 +19,19 @@ pipeline {
     }
     stages {
         stage ("Create Folder") {
+            when {
+                beforeAgent true
+                    expression {
+                        env.SKIP == "true"
+                    }
+            }
             steps {
-                echo('Hello')
                 createFolder("${env.folderPath}")
+            }
+        }
+        stage ("Remove Folder") {
+            steps {
+                removeFolder("${env.folderPath}")
             }
         }
     }
